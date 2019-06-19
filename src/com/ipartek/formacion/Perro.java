@@ -1,6 +1,10 @@
 package com.ipartek.formacion;
 
-public class Perro {
+import java.io.Serializable;
+
+public class Perro implements Serializable {
+	private static final long serialVersionUID=1L;
+	
 	//atributos privados para encapsular
 	private String nombre;
 	private String raza;

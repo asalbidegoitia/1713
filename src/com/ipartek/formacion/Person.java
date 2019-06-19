@@ -29,6 +29,12 @@ public class Person {
 		this.edad = edad;
 		this.sexo = sexo;
 	}
+	
+	public Person(String nombre) {
+		this();
+		this.nombre = nombre;
+		
+	}
 
 
 	//getters y setters
