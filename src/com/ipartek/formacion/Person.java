@@ -1,6 +1,6 @@
 package com.ipartek.formacion;
 
-public class Person {
+public class Person implements IAmigable{
 
 	//atributos
 	private String nombre;
@@ -100,6 +100,12 @@ public class Person {
 	public String saludar() {
 		return "Hola me llamo " + getNombre();
 		
+	}
+
+	@Override
+	public String despedir() {
+		// TODO Auto-generated method stub
+		return "Agur benur";
 	}
 
 

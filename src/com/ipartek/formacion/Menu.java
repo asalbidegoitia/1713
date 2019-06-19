@@ -56,10 +56,8 @@ public class Menu {
 				Aula.ListarAlumnos();
 				break;
 			case OPCION_CREAR:
-				System.out.println("Escribe el nombre del alumno que se añadira: ");
-				String alumnoCrear = sc.nextLine();
-				System.out.println("Se eliminara el alumno: " + alumnoCrear);
-				Aula.CrearAlumno(alumnoCrear);
+				
+				Aula.CrearAlumno();
 				System.out.printf("El alumno se ha creado correctamente");
 				break;
 			case OPCION_ELIMINAR:
