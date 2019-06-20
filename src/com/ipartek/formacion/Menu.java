@@ -3,6 +3,8 @@ package com.ipartek.formacion;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.ipartek.formacion.modelo.DAOAlumnoArrayList;
+
 public class Menu {
 	/*
 	 * TODO
@@ -29,60 +31,113 @@ public class Menu {
 	static final String OPCION_VOLUNTARIO="4";
 	static final String OPCION_SALIR="5";
 	
+	static String ULTIMO_VOLUNTARIO= "";
+	
+	static DAOAlumnoArrayList dao;
+	static ArrayList<Alumno> alumnos;
+	static Alumno alumno;
+	static Scanner sc;
 
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+		sc = new Scanner(System.in);
+		dao = new DAOAlumnoArrayList();
 		String opcion = null;
-		boolean repetir = true;
-		Aula.CargarAlumnos();
+		dao.CargarAlumnos();
 		do {
 			System.out.println("\nSelecciona una opción: ");
 			GenerarMenu();
 			try {
 				opcion = sc.nextLine();
 				System.out.println("Has elegido la opción: " + opcion);
-
-				repetir = false;
+				
 			} catch (Exception e) {
 				// e.printStackTrace();
 				System.out.println("Mensaje excepcion " + e.getMessage());
-				System.out.println("Ha introducido datos sin el formato indicado");
-				repetir = true;
+				System.out.println("Ha introducido datos sin el formato indicado");	
 			}
 			
 			switch (opcion) {
 			case OPCION_LISTAR:
 				System.out.println("Se listaran los alumnos: ");
-				Aula.ListarAlumnos();
+				alumnos =(ArrayList<Alumno>) dao.getAll();
+				Aula.pintarResul(alumnos);
 				break;
-			case OPCION_CREAR:
-				
-				Aula.CrearAlumno();
-				System.out.printf("El alumno se ha creado correctamente");
+			case OPCION_CREAR:				
+				CrearAlumno();
 				break;
 			case OPCION_ELIMINAR:
-				System.out.println("Escribe el nombre del alumno que se eliminara: ");
-				String alumnoEliminar = sc.nextLine();
-				System.out.println("Se eliminara el alumno: " + alumnoEliminar);
-				Aula.EliminarAlumno(alumnoEliminar);
-				System.out.printf("El alumno se ha eliminado correctamente");
+				EliminarAlumno(alumno);			
 				break;
 			case OPCION_VOLUNTARIO:
-				Aula.BuscarVoluntario();
+				BuscarVoluntario();
 				break;
 			}
-		}while(opcion!=OPCION_SALIR);
+		}while(!opcion.equals(OPCION_SALIR));
 		
+		System.out.println("Se acaba la ejecución");
 		sc.close();
 	}
 
 	private static void GenerarMenu() {
+		System.out.println("---------------------------------------------------------");
 		System.out.println(OPCION_LISTAR+" - Listar alumnos + Ranking");
 		System.out.println(OPCION_CREAR+" - Crear alumno");
 		System.out.println(OPCION_ELIMINAR+" - Eliminar alumno");
 		System.out.println(OPCION_VOLUNTARIO+" - Buscar voluntario");
 		System.out.println(OPCION_SALIR+" - Salir");
+		System.out.println("---------------------------------------------------------");
+		System.out.println("Introduce tu opción: ");
 
 	}
+	
+	public static void CrearAlumno() {
+		String nombre;
+		do {
+			System.out.println("Escribe el nombre del alumno que se añadira: ");
+			nombre = sc.nextLine();
+			System.out.println("Se creara el alumno: " + nombre);
+			
+		}while("".equals(nombre));
+		alumno= new Alumno(nombre);
+		alumno.setId(dao.getAll().size()+1);
+		//alumno.setNombre(nombre); //no hace falta porque lo pide el constructor
+		dao.insert(alumno);
+		System.out.printf("El alumno se ha creado correctamente");
+	}
 
+	public static void EliminarAlumno(Alumno alumno) {
+		String nombre;
+		int id=-1;
+		do {
+			System.out.println("Escribe el nombre del alumno que se eliminara: ");
+			nombre = sc.nextLine().trim();
+			System.out.println("Se elimina el alumno: " + nombre);
+			
+		}while("".equals(nombre)); //para que lo pida mientras no pongas nada
+				
+		for(Alumno a: dao.getAll()) {
+			if(nombre.equalsIgnoreCase(a.getNombre())) {
+				id=a.getId();
+				break;
+			}
+		}
+			
+		if(dao.delete(id)) {
+			System.out.printf("El alumno "+nombre+" se ha eliminado correctamente");
+		}else {
+			System.out.println("No se ha encontrado el alumno "+nombre);
+		}
+		
+	}
+	
+	public static void BuscarVoluntario() {
+		int alumnoRandom= 0;
+		do {
+			alumnoRandom = (int) (Math.random() * dao.getAll().size());
+			dao.getAll().get(alumnoRandom).setNumeroApariciones(dao.getAll().get(alumnoRandom).getNumeroApariciones()+1);
+		}while(ULTIMO_VOLUNTARIO.equals(dao.getAll().get(alumnoRandom).getNombre()));	
+		
+		ULTIMO_VOLUNTARIO=dao.getAll().get(alumnoRandom).getNombre();
+		System.out.println("El/La afortunado/a en leer es: " + dao.getAll().get(alumnoRandom).getNombre());
+	}
 }

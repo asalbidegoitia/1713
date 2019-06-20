@@ -3,6 +3,7 @@ package com.ipartek.formacion;
 public class Person implements IAmigable{
 
 	//atributos
+	private int id;
 	private String nombre;
 	private int edad;
 	private float altura; //Ejemplo: 1.70 cm
@@ -14,7 +15,8 @@ public class Person implements IAmigable{
 	
 	//constructora
 	public Person() {
-		super();
+		super(); //java.lang.object
+		this.id=-1; //No lo ha recuperado de la BD
 		this.nombre="Anonimo";
 		this.edad= 18;
 		this.altura = 0;
@@ -38,6 +40,15 @@ public class Person implements IAmigable{
 
 
 	//getters y setters
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -92,8 +103,8 @@ public class Person implements IAmigable{
 
 	@Override
 	public String toString() {
-		return "Person [nombre=" + nombre + ", edad=" + edad + ", altura=" + altura + ", peso=" + peso + ", ojos="
-				+ ojos + ", sexo=" + sexo + "]";
+		return "Person [id=" + id + ", nombre=" + nombre + ", edad=" + edad + ", altura=" + altura + ", peso=" + peso
+				+ ", ojos=" + ojos + ", sexo=" + sexo + "]";
 	}
 
 
@@ -108,6 +119,7 @@ public class Person implements IAmigable{
 		return "Agur benur";
 	}
 
+	
 
 
 }

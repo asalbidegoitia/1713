@@ -10,6 +10,8 @@ public class Alumno extends Person implements Comparable<Alumno>{
 
 	public Alumno(String nombre) {
 		super(nombre);
+		super.setId(-1);
+		this.setNumeroApariciones(0);
 	}
 	//getters y setters
 	public int getNumeroApariciones() {
