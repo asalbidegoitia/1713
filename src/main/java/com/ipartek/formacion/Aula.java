@@ -58,16 +58,4 @@ public class Aula {
 		} // end for
 
 	}
-
-	public static ArrayList<Alumno> pintarResul(ArrayList<Alumno> alumnos) {
-		Collections.sort(alumnos);
-		for (int i = 0; i < alumnos.size(); i++) {
-			
-			System.out.println((i+1) + " " + alumnos.get(i).getNombre()+" "+ alumnos.get(i).getNumeroApariciones());		
-		} // end for
-		return alumnos;
-	}
-	
-	
-
 }

@@ -1,6 +1,8 @@
 package com.ipartek.formacion;
 
-public class Person implements IAmigable{
+import java.io.Serializable;
+
+public class Person implements IAmigable,Serializable{
 
 	//atributos
 	private int id;

@@ -13,9 +13,37 @@ import com.ipartek.formacion.Alumno;
  */
 public interface IPersistible<P> {
 	//operaciones basicas para persistir un objeto en base de datos
+	/**
+	 * listado de P
+	 * @return List<P>, si no hay datos lista inicializada
+	 */
 	List<Alumno >getAll();
+	
+	/**
+	 * Recupera P por su identificador
+	 * @param id int identificador
+	 * @return P, si no existe null
+	 */
 	Alumno getById(int id);
-	boolean insert(P Pojo);
+	
+	/**
+	 * Crea un nuevo registro
+	 * @param pojo
+	 * @return true si inserta, false en caso contrario
+	 */
+	boolean insert(P pojo);
+	
+	/**
+	 * Elimina un nuevo registro
+	 * @param id identificador
+	 * @return true si inserta, false en caso contrario
+	 */
 	boolean delete(int id); //throws SQLException
+	
+	/**
+	 * Modifica un nuevo registro
+	 * @param pojo
+	 * @return true si inserta, false en caso contrario
+	 */
 	boolean update(P pojo); //el pojo debe tener un id
 }

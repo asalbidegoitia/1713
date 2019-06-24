@@ -1,6 +1,7 @@
 package com.ipartek.formacion.modelo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.ipartek.formacion.Alumno;
@@ -12,9 +13,26 @@ import com.ipartek.formacion.Alumno;
  *
  */
 public class DAOAlumnoArrayList implements IPersistible<Alumno> { //lo casteamos a Alumno en vez de P
+	
+	private static DAOAlumnoArrayList INSTANCE;
 	private ArrayList<Alumno> lista; //lo inicializamos en el constructor
 	
-	public DAOAlumnoArrayList() {
+	/**
+	 * Encargado de devolver solo 1 objeto, patron Singleton
+	 * @return
+	 */
+	public static DAOAlumnoArrayList getInstance() {
+		if(INSTANCE==null) {
+			INSTANCE = new DAOAlumnoArrayList();
+		}
+		return INSTANCE;
+		
+	}
+	
+	/**
+	 * Privado para que nadie pueda crear objetos (Singleton)
+	 */
+	private DAOAlumnoArrayList() {
 		super();
 		this.lista = new ArrayList<Alumno>();		
 	}
@@ -38,30 +56,49 @@ public class DAOAlumnoArrayList implements IPersistible<Alumno> { //lo casteamos
 
 	@Override
 	public boolean insert(Alumno pojo) {
-		return lista.add(pojo);
+		boolean resul= false;
+		if(pojo!=null) {
+			resul= lista.add(pojo);
+		}
+		return resul;
 	}
 
 	@Override
 	public boolean delete(int id) {
-		boolean eliminado= false;
+		Alumno alumno = getById(id);
+		return lista.remove(alumno);
+		/*
+		boolean resul= false;
 		if(id != -1) {
 			lista.remove(getById(id));
-			eliminado= true;
+			resul= true;
 		}else {
-			eliminado =false;
+			resul =false;
 		}
-		return eliminado;	
+		return resul;	
+		*/
 	}
 
 	@Override
 	public boolean update(Alumno pojo) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean resul = false;
+		if(pojo != null) {
+			for(Alumno alumno:lista) {
+				if(alumno.getId()== pojo.getId()) {
+					//modificar
+					int pos = lista.indexOf(alumno);
+					lista.set(pos,pojo);
+					resul =true;
+					break;
+				}
+			}
+		}
+		return resul;
 	}
 
 	
 
-	public ArrayList<Alumno> CargarAlumnos() {
+	public ArrayList<Alumno> cargarAlumnos() {
 		String[] losAlumnos = { "Ander", "Mounir", "Andoni", "Asier", "Jon C", "Arkaitz", "Aritz", "Manuel",
 				"Eder I", "Eder S", "Gaizka", "Borja", "Verónica", "Jon A", "José Luis" };
 
@@ -75,6 +112,16 @@ public class DAOAlumnoArrayList implements IPersistible<Alumno> { //lo casteamos
 			lista.add(alumno);	
 		}
 		return lista;
+	}
+	
+	
+	public ArrayList<Alumno> pintarResul(ArrayList<Alumno> alumnos) {
+		Collections.sort(alumnos);
+		for (int i = 0; i < alumnos.size(); i++) {
+			
+			System.out.println((i+1) + " " + alumnos.get(i).getNombre()+" "+ alumnos.get(i).getNumeroApariciones());		
+		} // end for
+		return alumnos;
 	}
 	
 	

@@ -40,37 +40,41 @@ public class Menu {
 
 	public static void main(String[] args) {
 		sc = new Scanner(System.in);
-		dao = new DAOAlumnoArrayList();
+		dao = DAOAlumnoArrayList.getInstance(); //accedemos a traves de la clase porque es estatico
+		//dao = new DAOAlumnoArrayList(); //ya no podemos hacerlo porque hemos hecho el DAO Singleton
 		String opcion = null;
-		dao.CargarAlumnos();
+		dao.cargarAlumnos();
 		do {
 			System.out.println("\nSelecciona una opción: ");
 			GenerarMenu();
 			try {
 				opcion = sc.nextLine();
-				System.out.println("Has elegido la opción: " + opcion);
+				
 				
 			} catch (Exception e) {
 				// e.printStackTrace();
 				System.out.println("Mensaje excepcion " + e.getMessage());
 				System.out.println("Ha introducido datos sin el formato indicado");	
 			}
-			
+
 			switch (opcion) {
 			case OPCION_LISTAR:
 				System.out.println("Se listaran los alumnos: ");
 				alumnos =(ArrayList<Alumno>) dao.getAll();
-				Aula.pintarResul(alumnos);
+				dao.pintarResul(alumnos);
 				break;
 			case OPCION_CREAR:				
-				CrearAlumno();
+				crearAlumno();
 				break;
 			case OPCION_ELIMINAR:
-				EliminarAlumno(alumno);			
+				eliminarAlumno(alumno);			
 				break;
 			case OPCION_VOLUNTARIO:
-				BuscarVoluntario();
+				buscarVoluntario();
 				break;
+			default:
+			    System.out.println("Ha introducido datos sin el formato indicado o la opción no es valida");
+			    break;
 			}
 		}while(!opcion.equals(OPCION_SALIR));
 		
@@ -90,7 +94,7 @@ public class Menu {
 
 	}
 	
-	public static void CrearAlumno() {
+	public static void crearAlumno() {
 		String nombre;
 		do {
 			System.out.println("Escribe el nombre del alumno que se añadira: ");
@@ -105,13 +109,13 @@ public class Menu {
 		System.out.printf("El alumno se ha creado correctamente");
 	}
 
-	public static void EliminarAlumno(Alumno alumno) {
+	public static void eliminarAlumno(Alumno alumno) {
 		String nombre;
 		int id=-1;
 		do {
 			System.out.println("Escribe el nombre del alumno que se eliminara: ");
 			nombre = sc.nextLine().trim();
-			System.out.println("Se elimina el alumno: " + nombre);
+			System.out.println("Se procedera a eliminar el alumno: " + nombre);
 			
 		}while("".equals(nombre)); //para que lo pida mientras no pongas nada
 				
@@ -130,7 +134,7 @@ public class Menu {
 		
 	}
 	
-	public static void BuscarVoluntario() {
+	public static void buscarVoluntario() {
 		int alumnoRandom= 0;
 		do {
 			alumnoRandom = (int) (Math.random() * dao.getAll().size());
